@@ -22,6 +22,7 @@ function initializePortfolio() {
     setupOrbitAnimation();
     setupFloatingCard();
     setupMobileMenu();
+    setupHamburgerMenu();
     setupProfileImage();
     
     // Hide loading screen after initialization
@@ -476,26 +477,43 @@ function setupFloatingCard() {
 
 // Mobile Menu (for responsive design)
 function setupMobileMenu() {
-    // Add mobile menu toggle if needed
+    // Mobile menu functionality is handled by hamburger menu
+    const navLinks = document.querySelectorAll('.nav-link');
     const navMenu = document.querySelector('.nav-menu');
-    const navContainer = document.querySelector('.nav-container');
     
-    if (window.innerWidth <= 768) {
-        // Create mobile menu toggle
-        const mobileToggle = document.createElement('div');
-        mobileToggle.className = 'mobile-toggle';
-        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
-        mobileToggle.style.cssText = `
-            display: block;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        `;
-        
-        navContainer.appendChild(mobileToggle);
-        
-        mobileToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+    // Close mobile menu when clicking on nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('mobile-active');
+            document.querySelector('.hamburger-menu').classList.remove('active');
+        });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-container') && navMenu.classList.contains('mobile-active')) {
+            navMenu.classList.remove('mobile-active');
+            document.querySelector('.hamburger-menu').classList.remove('active');
+        }
+    });
+}
+
+// Hamburger Menu Toggle
+function setupHamburgerMenu() {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', () => {
+            hamburgerMenu.classList.toggle('active');
+            navMenu.classList.toggle('mobile-active');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('mobile-active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
     }
 }
