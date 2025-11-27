@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+/* Utility: visually hidden (accessible labels) */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+    border: 0; padding: 0; margin: -1px;
+}
+
 :root {
     --primary-color: #6366f1;
     --secondary-color: #8b5cf6;
@@ -67,66 +77,8 @@ html {
     background: var(--secondary-color);
 }
 
-/* Loading Screen */
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--background-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-}
-
-#loading-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.loader {
-    text-align: center;
-}
-
-.loader-text {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.loader-bar {
-    width: 200px;
-    height: 4px;
-    background: var(--border-color);
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-}
-
-.loader-bar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-primary);
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
+/* Loading screen was removed from markup; if you reintroduce it,
+   add minimal styles here or re-use the styles from history. */
 
 /* Navigation */
 .nav {
@@ -186,7 +138,13 @@ html {
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.nav-menu li {
+    white-space: nowrap;
 }
 
 .nav-link {
@@ -242,7 +200,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -2;
     background: var(--gradient-mesh);
 }
 
@@ -1174,6 +1132,157 @@ html {
     overflow: hidden;
 }
 
+/* Certificates Section */
+.certificates {
+    padding: 6rem 0;
+    background: var(--background-primary);
+    position: relative;
+    overflow: hidden;
+    min-height: 52vh;
+}
+
+/* Certificates layout uses the main grid; visual column removed */
+
+.certificates-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    align-items: start;
+    padding: 0 1rem;
+}
+
+
+.certificate-card {
+    background: rgba(255,255,255,0.6);
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 8px 30px rgba(99,102,241,0.06);
+    transition: transform 0.36s cubic-bezier(.2,.9,.3,1), box-shadow 0.36s ease;
+}
+
+.certificate-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(99,102,241,0.12);
+}
+
+.certificate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.certificate-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.certificate-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.certificate-body p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Certificate thumbnail styles + subtle animation */
+.certificate-thumb {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.certificate-thumb img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(16,185,129,0.08);
+    transform-origin: center center;
+    transition: box-shadow 300ms ease, filter 300ms ease;
+    animation: none;
+    display: block;
+}
+
+.certificate-thumb img:hover {
+    /* Hover animation removed: keep visual stable */
+    transform: none;
+    box-shadow: 0 18px 40px rgba(16,185,129,0.08);
+    filter: none;
+}
+
+/* Reduce animation on small screens */
+@media (max-width: 480px) {
+    .certificate-thumb img { animation: none; max-width: 320px; }
+}
+
+/* Make the section background fill the whole certificates area and animate subtly */
+.certificates .section-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.certificates .section-bg .bg-dots {
+    width: 140%;
+    height: 140%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.06;
+    filter: blur(3px);
+    animation: slowFloat 40s linear infinite;
+}
+
+@keyframes slowFloat {
+    0% { transform: translate(-52%, -50%) rotate(0deg); }
+    50% { transform: translate(-48%, -52%) rotate(6deg); }
+    100% { transform: translate(-52%, -50%) rotate(0deg); }
+}
+
+/* Ensure content sits above the animated background */
+.certificates .container { position: relative; z-index: 1; }
+
+/* Responsive: single-column on small screens */
+@media (max-width: 900px) {
+    .certificates-grid { grid-template-columns: 1fr; }
+    .certificates { padding: 4rem 0; }
+    /* Responsive adjustments for certificates */
+}
+
+/* Small helper to space certificate action buttons */
+.certificate-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Decorative icon shown in the certificates header */
+.certificate-icon {
+    font-size: 2.4rem;
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 480px) {
+    .certificate-icon { font-size: 1.8rem; }
+}
+
 .project-card.featured {
     border: 2px solid var(--primary-color);
     position: relative;
@@ -1424,6 +1533,208 @@ html {
     font-weight: 500;
 }
 
+/* Blog Section */
+.blog {
+    padding: 6rem 0;
+    background: var(--background-primary);
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.blog-card {
+    background: var(--background-secondary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.blog-card.featured {
+    border: 2px solid var(--primary-color);
+    position: relative;
+}
+
+.blog-card.featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    animation: shimmer 3s infinite;
+    z-index: 1;
+}
+
+.blog-image {
+    height: 200px;
+    background: var(--gradient-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.blog-image .image-placeholder {
+    font-size: 3rem;
+    color: white;
+    opacity: 0.8;
+    z-index: 2;
+}
+
+.blog-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 3;
+}
+
+.blog-date {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 3;
+}
+
+.blog-content {
+    padding: 2rem;
+}
+
+.blog-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.blog-excerpt {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.blog-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.read-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.read-time i {
+    font-size: 0.8rem;
+}
+
+.blog-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.blog-tags .tag {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.blog-tags .tag:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.blog-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.blog-link:hover::after {
+    width: calc(100% - 1.5rem);
+}
+
+.blog-link:hover {
+    color: var(--secondary-color);
+}
+
+.blog-link i {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.blog-link:hover i {
+    transform: translateX(5px);
+}
+
+.blog-cta {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.blog-cta p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+
 /* Contact Section */
 .contact {
     padding: 6rem 0;
@@ -1506,6 +1817,17 @@ html {
     border-color: var(--primary-color);
 }
 
+/* Focus styles for keyboard users */
+.btn:focus-visible,
+a:focus-visible,
+.nav-link:focus-visible,
+.social-link:focus-visible,
+.social-icon:focus-visible,
+.project-card:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
@@ -1577,13 +1899,21 @@ html {
 
 /* Particles Background */
 #particles-js {
+    /* Position the container to cover the entire viewport */
     position: fixed;
-    width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
-    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    
+    /* VERY IMPORTANT: Ensure it is behind all other content */
+    z-index: -1; 
+    
+    /* Set the background color (adjust to match your site's dark theme) */
+    background-color: #282c34; 
+    
+    /* Optional: Hide scrollbars if the fixed position causes them to appear */
+    overflow: hidden;
 }
 
 /* Animations */
@@ -2003,4 +2333,11 @@ html {
 /* Smooth scrolling for internal links */
 a[href^="#"] {
     scroll-behavior: smooth;
+}
+
+/* Hide particles on small screens to save CPU and improve readability */
+@media (max-width: 768px) {
+    #particles-js {
+        display: none !important;
+    }
 }

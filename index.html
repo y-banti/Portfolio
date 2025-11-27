@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Banti Yadav - Creative developer crafting beautiful, user-centered web experiences. Portfolio showcasing projects, skills and contact information.">
+
     <title>Banti's Portfolio</title>
+   
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader">
-            <div class="loader-text">Loading...</div>
-            <div class="loader-bar"></div>
-        </div>
-    </div>
+
+    <div id="particles-js"></div>
 
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="#home" class="nav-logo" aria-label="Home">
                 <span class="logo-text">Banti's Portfolio</span>
                 <div class="logo-cursor"></div>
-            </div>
+            </a>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#certificates" class="nav-link">Certificates</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger-menu">
-                <span></span>
+                <span>help</span>
                 <span></span>
                 <span></span>
             </div>
@@ -78,10 +79,10 @@
                     </button>
                 </div>
                 <div class="hero-social">
-                    <a href="https://github.com/y-banti" class="social-icon"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/banti-kumar-31a2b0215/" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/knight_wolf_404/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/y-banti" class="social-icon" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/banti-kumar-31a2b0215/" class="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/knight_wolf_404/" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -300,6 +301,48 @@
         </div>
     </section>
 
+    <!-- Certificate Section -->
+    <section id="certificates" class="certificates">
+        <div class="section-bg">
+            <div class="bg-dots"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <div class="certificate-icon" aria-hidden="true"><i class="fas fa-award"></i></div>
+                <div class="section-badge">📜 Certificates</div>
+                <h2 class="section-title">My Certifications</h2>
+                <p class="section-subtitle">Credentials that showcase my skills and knowledge</p>
+            </div>
+            <div class="certificates-grid">
+                <article class="certificate-card" role="article" aria-labelledby="cert-fullstack-title">
+                    <div class="certificate-header">
+                        <h3 id="cert-fullstack-title">Full Stack Development</h3>
+                        <div class="certificate-meta">Issued: <time datetime="2023-01" class="certificate-date">Jan 2023</time></div>
+                    </div>
+                    <div class="certificate-body">
+                        <p>Completed a comprehensive course on full stack development, covering both front-end and back-end technologies.</p>
+                    </div>
+                    <div class="certificate-actions" style="margin-top:12px;">
+                        <a href="https://www.linkedin.com/feed/update/XXXXXXXXXXXXX/" class="btn btn-outline" target="_blank" rel="noopener noreferrer" aria-label="View Full Certificate on LinkedIn (opens in new tab)">View Certificate <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                    </div>
+                </article>
+
+                <article class="certificate-card" role="article" aria-labelledby="cert-js-title">
+                    <div class="certificate-header">
+                        <h3 id="cert-js-title">JavaScript Algorithms</h3>
+                        <div class="certificate-meta">Issued: <time datetime="2023-02" class="certificate-date">Feb 2023</time></div>
+                    </div>
+                    <div class="certificate-body">
+                        <p>Mastered JavaScript algorithms and data structures through hands-on projects and challenges.</p>
+                    </div>
+                    <div class="certificate-actions" style="margin-top:12px;">
+                        <a href="https://www.linkedin.com/feed/update/YYYYYYYYYYYYYYY/" class="btn btn-outline" target="_blank" rel="noopener noreferrer" aria-label="View Full Certificate on LinkedIn (opens in new tab)">View Certificate <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <div class="section-bg">
@@ -315,11 +358,11 @@
                 <div class="project-card featured">
                     <div class="project-image">
                         <div class="image-placeholder">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-book"></i>
                         </div>
                         <div class="project-overlay">
                             <div class="overlay-content">
-                                <button class="btn btn-primary">View Project</button>
+                                            <a href="https://uni-notes-que.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Project</a>
                                 <button class="btn btn-secondary">View Code</button>
                             </div>
                         </div>
@@ -327,7 +370,7 @@
                     </div>
                     <div class="project-content">
                         <div class="project-header">
-                            <h3>E-Commerce Platform</h3>
+                            <h3>University Question Paper Website</h3>
                             <div class="project-rating">
                                 <span class="star">⭐</span>
                                 <span class="star">⭐</span>
@@ -336,16 +379,16 @@
                                 <span class="star">⭐</span>
                             </div>
                         </div>
-                        <p>A full-stack e-commerce solution with modern UI, secure payment integration, and real-time inventory management.</p>
+                        <p>A full-stack application for managing university question papers, featuring a modern UI, secure authentication, and efficient search capabilities.</p>
                         <div class="project-tech">
-                            <span class="tech-tag react">React</span>
-                            <span class="tech-tag nodejs">Node.js</span>
-                            <span class="tech-tag mongodb">MongoDB</span>
+                            <span class="tech-tag react">HTML</span>
+                            <span class="tech-tag nodejs">CSS</span>
+                            <span class="tech-tag mongodb">JS</span>
                         </div>
                         <div class="project-stats">
                             <div class="stat">
                                 <span class="stat-icon">👥</span>
-                                <span class="stat-value">500+</span>
+                                <span class="stat-value">200+</span>
                                 <span class="stat-label">Users</span>
                             </div>
                             <div class="stat">
@@ -359,11 +402,11 @@
                 <div class="project-card">
                     <div class="project-image">
                         <div class="image-placeholder">
-                            <i class="fas fa-tasks"></i>
+                            <i class="fas fa-gamepad"></i>
                         </div>
                         <div class="project-overlay">
                             <div class="overlay-content">
-                                <a href="https://y-banti.github.io/2Dgame/" target="_blank" class="btn btn-primary">View Project</a>
+                                <a href="https://y-banti.github.io/2Dgame/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Project</a>
                                 <button class="btn btn-secondary">View Code</button>
                             </div>
                         </div>
@@ -379,22 +422,21 @@
                                 <span class="star">⭐</span>
                             </div>
                         </div>
-                        <p>A collaborative task management application with real-time updates, team features, and intuitive drag-and-drop interface.</p>
+                        <p>A fun and interactive game website built with modern web technologies. Games include puzzles, tic-tac-toe, and strategy genres.</p>
                         <div class="project-tech">
-                            <span class="tech-tag vue">Vue.js</span>
-                            <span class="tech-tag firebase">Firebase</span>
+                            <span class="tech-tag vue">JavaScript</span>
                             <span class="tech-tag css">CSS3</span>
                         </div>
                         <div class="project-stats">
                             <div class="stat">
-                                <span class="stat-icon">📊</span>
+                                <span class="stat-icon">🎮</span>
                                 <span class="stat-value">95%</span>
-                                <span class="stat-label">Efficiency</span>
+                                <span class="stat-label">Working</span>
                             </div>
                             <div class="stat">
                                 <span class="stat-icon">⚡</span>
-                                <span class="stat-value">Real-time</span>
-                                <span class="stat-label">Updates</span>
+                                <span class="stat-value">Popular</span>
+                                <span class="stat-label">Games</span>
                             </div>
                         </div>
                     </div>
@@ -450,6 +492,173 @@
         </div>
     </section>
 
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">📝 Blog</div>
+                <h2 class="section-title">Latest Articles</h2>
+                <p class="section-subtitle">Sharing insights, tutorials, and thoughts on web development</p>
+            </div>
+            <div class="blog-grid">
+                <article class="blog-card featured">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="blog-category">Web Development</div>
+                        <div class="blog-date">Dec 20, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Building Responsive Web Applications with Modern CSS</h3>
+                        <p class="blog-excerpt">Learn how to create fully responsive web applications using CSS Grid, Flexbox, and modern CSS techniques. A complete guide for developers.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>5 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">CSS</span>
+                                <span class="tag">Responsive</span>
+                                <span class="tag">Web Dev</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div class="blog-category">JavaScript</div>
+                        <div class="blog-date">Dec 15, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Understanding JavaScript Closures and Scope</h3>
+                        <p class="blog-excerpt">Deep dive into JavaScript closures, lexical scoping, and how they work together to create powerful programming patterns.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>8 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Advanced</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <div class="blog-category">React</div>
+                        <div class="blog-date">Dec 10, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Getting Started with React Hooks</h3>
+                        <p class="blog-excerpt">A beginner's guide to React Hooks - useState, useEffect, and custom hooks. Learn how to modernize your React applications.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>6 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">Hooks</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="blog-category">Mobile Dev</div>
+                        <div class="blog-date">Dec 5, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Mobile-First Design Principles</h3>
+                        <p class="blog-excerpt">Why mobile-first design is crucial in 2024 and how to implement it effectively in your web development projects.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>4 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">Mobile</span>
+                                <span class="tag">Design</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="blog-category">Backend</div>
+                        <div class="blog-date">Nov 30, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Introduction to Node.js and Express</h3>
+                        <p class="blog-excerpt">Build your first REST API with Node.js and Express. A step-by-step tutorial for backend development beginners.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>10 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">Node.js</span>
+                                <span class="tag">Backend</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="blog-category">Tools</div>
+                        <div class="blog-date">Nov 25, 2024</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Essential VS Code Extensions for Web Developers</h3>
+                        <p class="blog-excerpt">Boost your productivity with these must-have VS Code extensions for web development. From debugging to code formatting.</p>
+                        <div class="blog-meta">
+                            <div class="read-time">
+                                <i class="fas fa-clock"></i>
+                                <span>3 min read</span>
+                            </div>
+                            <div class="blog-tags">
+                                <span class="tag">VS Code</span>
+                                <span class="tag">Productivity</span>
+                            </div>
+                        </div>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+            <div class="blog-cta">
+                <p>Want to read more articles?</p>
+                <a href="#" class="btn btn-outline">View All Posts</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
@@ -489,16 +698,20 @@
                 </div>
                 <form id="contact-form" class="contact-form">
                     <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        <label for="name" class="visually-hidden">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        <label for="email" class="visually-hidden">Your Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                        <label for="subject" class="visually-hidden">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        <label for="message" class="visually-hidden">Your Message</label>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-required="true"></textarea>
                     </div>
                     <button type="submit" id="submit-btn" class="btn btn-primary">Send Message</button>
                 </form>
@@ -507,19 +720,20 @@
             </div>
         </div>
     </section>
+    <div></div>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-text">
-                    <p>&copy; 2024 Banti. All rights reserved.</p>
+                    <p>&copy; <span id="footer-year">2025</span> Banti. All rights reserved.</p>
                 </div>
                 <div class="social-links">
-                    <a href="https://github.com/y-banti" class="social-link"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/banti-kumar-31a2b0215/" class="social-link"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/knight_wolf_404/" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/y-banti" class="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/banti-kumar-31a2b0215/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/knight_wolf_404/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -529,11 +743,7 @@
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

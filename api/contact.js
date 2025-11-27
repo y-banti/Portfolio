@@ -1,0 +1,57 @@
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { from_name, from_email, subject, message } = req.body || {};
+
+  if (!from_name || !from_email || !subject || !message) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  // Basic server-side email format check
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(from_email)) {
+    return res.status(400).json({ error: 'Invalid email address' });
+  }
+
+  // Read EmailJS configuration from environment variables (set these in Vercel)
+  const SERVICE_ID = process.env.EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID;
+  const USER_ID = process.env.EMAILJS_USER_ID; // EmailJS user/public key
+
+  if (!SERVICE_ID || !TEMPLATE_ID || !USER_ID) {
+    return res.status(500).json({ error: 'Email service not configured' });
+  }
+
+  const payload = {
+    service_id: SERVICE_ID,
+    template_id: TEMPLATE_ID,
+    user_id: USER_ID,
+    template_params: {
+      from_name,
+      from_email,
+      subject,
+      message
+    }
+  };
+
+  try {
+    const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!r.ok) {
+      const text = await r.text();
+      console.error('EmailJS responded with error:', r.status, text);
+      return res.status(502).json({ error: 'Email service error' });
+    }
+
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Failed to send email:', err);
+    return res.status(502).json({ error: 'Failed to send email' });
+  }
+}

@@ -2,14 +2,33 @@
 let currentTheme = 'light';
 let isLoading = true;
 
+const DEBUG = false;
+
+const CLEAR_CACHE_ON_LOAD = false;
+
 // DOM Content Loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    if (CLEAR_CACHE_ON_LOAD && 'serviceWorker' in navigator && 'caches' in window) {
+        try {
+            // Unregister any active service workers
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(r => r.unregister()).map(p => p.catch(() => {})));
+
+            // Delete all caches
+            const keys = await caches.keys();
+            await Promise.all(keys.map(k => caches.delete(k)).map(p => p.catch(() => {})));
+
+            if (DEBUG) console.log('Cleared service workers and caches (CLEAR_CACHE_ON_LOAD=true)');
+        } catch (err) {
+            if (DEBUG) console.warn('Failed to clear caches/service workers:', err);
+        }
+    }
+
     initializePortfolio();
 });
 
 // Initialize Portfolio
 function initializePortfolio() {
-    setupLoadingScreen();
     setupNavigation();
     setupThemeToggle();
     setupTypingEffect();
@@ -25,39 +44,13 @@ function initializePortfolio() {
     setupHamburgerMenu();
     setupProfileImage();
     
-    // Hide loading screen after initialization
-    setTimeout(() => {
-        hideLoadingScreen();
-    }, 2000);
-}
-
-// Loading Screen
-function setupLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    
-    // Animate loading bar
-    const loadingBar = document.querySelector('.loader-bar');
-    loadingBar.style.setProperty('--progress', '0%');
-    
-    // Simulate loading progress
-    let progress = 0;
-    const loadingInterval = setInterval(() => {
-        progress += Math.random() * 10;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadingInterval);
-        }
-        loadingBar.style.setProperty('--progress', `${progress}%`);
-    }, 100);
-}
-
-function hideLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.classList.add('hidden');
+    // No blocking loading screen — mark app ready and trigger initial animations
     isLoading = false;
-    
-    // Start other animations
     animateOnScroll();
+
+    // Set dynamic footer year
+    const footerYearEl = document.getElementById('footer-year');
+    if (footerYearEl) footerYearEl.textContent = new Date().getFullYear();
 }
 
 // Navigation
@@ -208,49 +201,96 @@ function animateOnScroll() {
 
 // Particles Background
 function setupParticles() {
-    if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#6366f1' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.5, random: false },
-                size: { value: 3, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: '#6366f1',
-                    opacity: 0.4,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 6,
-                    direction: 'none',
-                    random: false,
-                    straight: false,
-                    out_mode: 'out',
-                    bounce: false
-                }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true
-                },
-                modes: {
-                    grab: { distance: 400, line_linked: { opacity: 1 } },
-                    bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-                    repulse: { distance: 200, duration: 0.4 },
-                    push: { particles_nb: 4 },
-                    remove: { particles_nb: 2 }
-                }
-            },
-            retina_detect: true
-        });
+    // Skip initializing on small screens (mobile/tablet) to save CPU and bandwidth
+    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+        if (DEBUG) console.log('Skipping particles initialization on small screens');
+        const el = document.getElementById('particles-js');
+        if (el) el.style.display = 'none';
+        return;
     }
+
+    // Initialize particles; if the library isn't loaded yet, load it dynamically and retry.
+    const CDN = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
+
+    function initParticles() {
+        try {
+            console.log('[particles] setupParticles: running initParticles');
+            var el = document.getElementById('particles-js');
+            if (el) el.style.display = '';
+
+            if (typeof particlesJS === 'undefined') throw new Error('particlesJS undefined');
+
+            // Plexus / connecting-dots configuration (stronger visibility)
+            console.log('[particles] particlesJS found — initializing');
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 90, density: { enable: true, value_area: 900 } },
+                    color: { value: '#8b5cf6' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.45, random: false },
+                    size: { value: 2.5, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 200,
+                        color: '#8b5cf6',
+                        opacity: 0.42,
+                        width: 1.2
+                    },
+                    move: {
+                        enable: true,
+                        speed: 0.7,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'grab' },
+                        onclick: { enable: false },
+                        resize: true
+                    },
+                    modes: {
+                        grab: { distance: 220, line_linked: { opacity: 0.6 } },
+                        bubble: { distance: 200, size: 0, duration: 0.3, opacity: 0 },
+                        repulse: { distance: 0, duration: 0 },
+                        push: { particles_nb: 0 },
+                        remove: { particles_nb: 0 }
+                    }
+                },
+                retina_detect: true
+            });
+            // Make sure the canvas is visible (adjusted after init)
+            try {
+                const canvas = document.querySelector('#particles-js canvas');
+                if (canvas) {
+                    canvas.style.opacity = '1';
+                    canvas.style.filter = 'none';
+                }
+            } catch (e) {}
+
+            console.log('[particles] initialization complete');
+        } catch (err) {
+            console.warn('[particles] particlesJS not available yet, attempting dynamic load', err);
+            // Load script dynamically and retry once
+            const existing = document.querySelector('script[data-particles-loader]');
+            if (existing) return; // already loading
+            const s = document.createElement('script');
+            s.src = CDN;
+            s.async = true;
+            s.setAttribute('data-particles-loader', '1');
+            s.onload = () => {
+                try { initParticles(); } catch (e) { if (DEBUG) console.warn(e); }
+            };
+            s.onerror = () => { if (DEBUG) console.warn('Failed to load particles.js from CDN'); };
+            document.head.appendChild(s);
+        }
+    }
+
+    initParticles();
 }
 
 // Custom Cursor
@@ -327,8 +367,7 @@ function setupContactForm() {
     const successMessage = document.getElementById('success-message');
     const errorMessage = document.getElementById('error-message');
     
-    // Initialize EmailJS
-    emailjs.init('ABAy7mSfK2X0bI9fM');
+    // No client-side email provider initialization — contact form posts to serverless endpoint
     
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -342,6 +381,12 @@ function setupContactForm() {
         // Validation
         if (!name || !email || !subject || !message) {
             showMessage(errorMessage, 'Please fill in all fields.');
+            return;
+        }
+        // Basic email format check
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            showMessage(errorMessage, 'Please enter a valid email address.');
             return;
         }
         
@@ -361,22 +406,25 @@ function setupContactForm() {
             message: message
         };
         
-        // Send email using EmailJS
-        emailjs.send('service_f3j0e2a', 'template_w8e53iq', templateParams)
-            .then((response) => {
-                console.log('SUCCESS!', response.status, response.text);
-                showMessage(successMessage, 'Thank you! Your message has been sent successfully.');
-                form.reset();
-            })
-            .catch((error) => {
-                console.error('FAILED...', error);
-                showMessage(errorMessage, 'Oops! Something went wrong. Please try again.');
-            })
-            .finally(() => {
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            });
+        // Send form to serverless endpoint which will deliver the email (Vercel function)
+        fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(templateParams)
+        })
+        .then(async (res) => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            showMessage(successMessage, 'Thank you! Your message has been sent successfully.');
+            form.reset();
+        })
+        .catch((err) => {
+            if (DEBUG) console.error('Contact send failed', err);
+            showMessage(errorMessage, 'Oops! Something went wrong. Please try again later.');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
     });
     
     // Helper function to show messages
@@ -409,10 +457,34 @@ function setupSmoothScrolling() {
                         top: offsetTop,
                         behavior: 'smooth'
                     });
+                    // Close mobile menu if open
+                    const navMenu = document.querySelector('.nav-menu');
+                    const hamburger = document.querySelector('.hamburger-menu');
+                    if (navMenu && navMenu.classList.contains('mobile-active')) {
+                        navMenu.classList.remove('mobile-active');
+                        if (hamburger) hamburger.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
                 }
             }
         });
     });
+
+    // Make logo (nav-logo) behave like a nav-link: smooth scroll + close mobile menu
+    const navLogo = document.querySelector('.nav-logo');
+    if (navLogo) {
+        navLogo.addEventListener('click', (e) => {
+            // If it is an anchor with href, default handler will manage smooth scrolling
+            // Ensure mobile menu closes
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (navMenu && navMenu.classList.contains('mobile-active')) {
+                navMenu.classList.remove('mobile-active');
+                if (hamburger) hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 }
 
 // Orbit Animation
@@ -596,7 +668,7 @@ setupEasterEggs();
 // Analytics and tracking (placeholder)
 function trackEvent(eventName, properties = {}) {
     // Implement your analytics tracking here
-    console.log(`Event: ${eventName}`, properties);
+    if (DEBUG) console.log(`Event: ${eventName}`, properties);
 }
 
 // Track user interactions
@@ -613,7 +685,8 @@ document.addEventListener('click', (e) => {
 function setupAccessibility() {
     // Skip to main content link
     const skipLink = document.createElement('a');
-    skipLink.href = '#main';
+    // keep skip link target aligned with the hero section's existing id (#home)
+    skipLink.href = '#home';
     skipLink.textContent = 'Skip to main content';
     skipLink.className = 'skip-link';
     skipLink.style.cssText = `
@@ -641,8 +714,10 @@ function setupAccessibility() {
     
     // Add main landmark
     const heroSection = document.querySelector('.hero');
-    heroSection.id = 'main';
-    heroSection.setAttribute('role', 'main');
+    // Do not change the hero section's id (preserve existing anchors like #home)
+    if (heroSection) {
+        heroSection.setAttribute('role', 'main');
+    }
 }
 
 // Setup accessibility features
@@ -650,14 +725,25 @@ setupAccessibility();
 
 // Service worker for offline functionality (optional)
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
+    window.addEventListener('load', async () => {
+        // If we're actively clearing caches on every load, skip registering the SW
+        if (typeof CLEAR_CACHE_ON_LOAD !== 'undefined' && CLEAR_CACHE_ON_LOAD) {
+            if (DEBUG) console.log('CLEAR_CACHE_ON_LOAD is true — skipping service worker registration.');
+            return;
+        }
+
+        try {
+            // Check if service worker file exists before attempting registration
+            const resp = await fetch('/sw.js', { method: 'HEAD' });
+            if (resp.ok) {
+                const registration = await navigator.serviceWorker.register('/sw.js');
+                if (DEBUG) console.log('SW registered: ', registration);
+            } else {
+                if (DEBUG) console.warn('Service worker file not found (skipping registration).');
+            }
+        } catch (err) {
+            if (DEBUG) console.warn('Service worker registration skipped or failed:', err);
+        }
     });
 }
 
